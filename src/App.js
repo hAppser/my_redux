@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
-
+import "./App.css";
+import useCustomRedux from "./useCustomRedux/useCustomRedux";
 function App() {
+  const store = useCustomRedux();
+  let count = store.getState().count;
+  store.subsribe(() => {
+    count = store.getState().count;
+    document.querySelector("#counter").innerHTML = count;
+  });
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div id="counter">{count}</div>
+      <button
+        className="plus btn"
+        onClick={() => {
+          store.dispatch({ type: "INCREMENT", payload: 1 });
+        }}
+      >
+        +
+      </button>
+      <button
+        className="minus btn"
+        onClick={() => {
+          store.dispatch({ type: "DECREMENT", payload: 1 });
+        }}
+      >
+        -
+      </button>
     </div>
   );
 }
